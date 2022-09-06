@@ -12,12 +12,12 @@ class User < ApplicationRecord
   after_validation :hash_password
 
   def pass_rate_limit?
-    self.tweets.where('created_at > ?', Time.now - 60.minutes).count < 30
+    tweets.where('created_at > ?', Time.now - 60.minutes).count < 30
   end
 
   private
 
-    def hash_password
-      self.password = BCrypt::Password.create(self.password)
-    end
+  def hash_password
+    self.password = BCrypt::Password.create(password)
+  end
 end

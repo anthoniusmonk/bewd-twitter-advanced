@@ -30,9 +30,9 @@ RSpec.describe TweetsController, type: :controller do
       user = FactoryBot.create(:user) # create a user
       session = user.sessions.create # create a session for the user
       @request.cookie_jar.signed['twitter_session_token'] = session.token # set the session token in the cookie, so that the user is logged in "in the front-end"
-      
+
       # create 30 tweets for the user now, so that the next tweet should fail to be created
-      30.times do |i|
+      30.times do |_i|
         FactoryBot.create(:tweet, user: user)
       end
 
@@ -123,19 +123,19 @@ RSpec.describe TweetsController, type: :controller do
 
   context 'GET /users/:username/tweets' do
     it 'renders tweets by username' do
-      user_1 = FactoryBot.create(:user, username: 'user_1', email: 'user_1@user.com')
-      user_2 = FactoryBot.create(:user, username: 'user_2', email: 'user_2@user.com')
+      user1 = FactoryBot.create(:user, username: 'user1', email: 'user1@user.com')
+      user2 = FactoryBot.create(:user, username: 'user2', email: 'user2@user.com')
 
-      tweet_1 = FactoryBot.create(:tweet, user: user_1)
-      tweet_2 = FactoryBot.create(:tweet, user: user_2)
+      tweet1 = FactoryBot.create(:tweet, user: user1)
+      FactoryBot.create(:tweet, user: user2)
 
-      get :index_by_user, params: { username: user_1.username }
+      get :index_by_user, params: { username: user1.username }
 
       expect(response.body).to eq({
         tweets: [
           {
-            id: tweet_1.id,
-            username: user_1.username,
+            id: tweet1.id,
+            username: user1.username,
             message: 'Test Message',
             image: nil
           }
@@ -144,13 +144,13 @@ RSpec.describe TweetsController, type: :controller do
     end
 
     it 'renders tweets with images by username' do
-      user_1 = FactoryBot.create(:user, username: 'user_1', email: 'user_1@user.com')
-      user_2 = FactoryBot.create(:user, username: 'user_2', email: 'user_2@user.com')
+      user1 = FactoryBot.create(:user, username: 'user1', email: 'user1@user.com')
+      user2 = FactoryBot.create(:user, username: 'user2', email: 'user2@user.com')
 
-      tweet_1 = FactoryBot.create(:tweet, user: user_1, image: fixture_file_upload('test.png'))
-      tweet_2 = FactoryBot.create(:tweet, user: user_2, image: fixture_file_upload('test.png'))
+      FactoryBot.create(:tweet, user: user1, image: fixture_file_upload('test.png'))
+      FactoryBot.create(:tweet, user: user2, image: fixture_file_upload('test.png'))
 
-      get :index_by_user, params: { username: user_1.username }
+      get :index_by_user, params: { username: user1.username }
 
       expect(JSON.parse(response.body)['tweets'].first['image']).to include('test.png')
     end

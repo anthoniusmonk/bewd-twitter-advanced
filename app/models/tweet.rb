@@ -9,8 +9,8 @@ class Tweet < ApplicationRecord
   after_create :notify_via_email
 
   private
-  
-    def notify_via_email
-      TweetMailer.notify(self).deliver!
-    end
+
+  def notify_via_email
+    TweetMailer.notify(self).deliver!
+  end
 end
