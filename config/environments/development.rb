@@ -56,4 +56,7 @@ Rails.application.configure do
   config.generators do |g|
     g.test_framework nil
   end
+
+  config.active_storage.service = :amazon
+
 end
