@@ -58,5 +58,4 @@ Rails.application.configure do
   end
 
   config.active_storage.service = :amazon
-
 end
