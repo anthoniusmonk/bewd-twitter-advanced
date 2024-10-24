@@ -6,6 +6,9 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # Using the local settings for Active Storage
+  config.active_storage.service = :local
+
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -36,6 +39,9 @@ Rails.application.configure do
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
+
+  # Using the Amazon S3 settings for Active Storage
+  config.active_storage.service = :amazon
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
